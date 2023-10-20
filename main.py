@@ -1,16 +1,33 @@
-'''
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 
-
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return FileResponse('index.html')
 
 # запуск приложения в консоли
 # uvicorn main:app --reload
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################################
+# альтернатива
 '''
 from fastapi import FastAPI
 
@@ -23,3 +40,4 @@ async def root():
 
 # запуск приложения в консоли
 # uvicorn main:my_awesome_api --reload
+'''
