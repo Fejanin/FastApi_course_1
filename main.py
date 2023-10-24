@@ -1,9 +1,13 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
+from models import User
 
 
-class User(BaseModel):
+user = User(username='John Doe', id=1)
+
+
+class User1(BaseModel):
     username: str
     message: str
 
@@ -14,7 +18,7 @@ async def root():
     return FileResponse('index.html')
 
 @app.post("/")
-async def root(user: User):
+async def root(user: User1):
     '''тут мы можем с переменной user, которая в себе содержит объект класса User с соответствующими полями (и указанными типами), делать любую логику
         - например, мы можем сохранить информацию в базу данных
         - или передать их в другую функцию
@@ -26,6 +30,10 @@ async def root(user: User):
 @app.get("/custom")
 def read_custom_message():
     return {"message": "This is a custom message!"}
+
+@app.get("/users", response_model=User)
+def user_root():
+    return user
 
 # запуск приложения в консоли
 # uvicorn main:app --reload
