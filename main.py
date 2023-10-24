@@ -7,6 +7,11 @@ app = FastAPI()
 async def root():
     return FileResponse('index.html')
 
+# новый роут
+@app.get("/custom")
+def read_custom_message():
+    return {"message": "This is a custom message!"}
+
 # запуск приложения в консоли
 # uvicorn main:app --reload
 
