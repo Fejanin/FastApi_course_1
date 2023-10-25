@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from models import User
 
 
-user = User(username='John Doe', id=1)
+user = User(username='John Doe', age=18)
 
 
 class User1(BaseModel):
@@ -34,6 +34,12 @@ def read_custom_message():
 @app.get("/users", response_model=User)
 def user_root():
     return user
+
+@app.post("/users")
+async def show_user(usr:User):
+    return {"name": usr.name,
+            "age": usr.age,
+            "is_adult": usr.age>=18}
 
 # запуск приложения в консоли
 # uvicorn main:app --reload
