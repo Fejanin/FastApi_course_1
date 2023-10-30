@@ -1,8 +1,11 @@
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from pydantic import BaseModel
 from models import User
 
+
+# запуск приложения в консоли
+# uvicorn main:app --reload
 
 user = User(username='John Doe', age=18)
 
@@ -15,35 +18,21 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return FileResponse('index.html')
+    return FileResponse('templates/index.html')
 
-@app.post("/")
-async def root(user: User1):
-    '''тут мы можем с переменной user, которая в себе содержит объект класса User с соответствующими полями (и указанными типами), делать любую логику
-        - например, мы можем сохранить информацию в базу данных
-        - или передать их в другую функцию
-        - или другое'''
-    print(f'Мы получили от юзера {user.username} такое сообщение: {user.message}')  # тут мы просто выведем полученные данные на экран в отформатированном варианте
-    return user # или можем вернуть обратно полученные данные, как символ того, что данные получили, или другая логика на ваш вкус
+@app.get("/about")
+async def about():
+    return {'message': 'О сайте.'}
 
-# новый роут
-@app.get("/custom")
-def read_custom_message():
-    return {"message": "This is a custom message!"}
+@app.get("/faq")
+async  def faq():
+    return HTMLResponse('<h1>FAQ</h1>')
 
-@app.get("/users", response_model=User)
-def user_root():
-    return user
 
-@app.post("/users")
-async def show_user(usr:User):
-    return {"name": usr.name,
-            "age": usr.age,
-            "is_adult": usr.age>=18}
-
-# запуск приложения в консоли
-# uvicorn main:app --reload
-
+@app.get("/download")
+async def download_file():
+    # взяли файл test_file.txt, переименовал его в testpage.html и произвели его загрузку
+    return FileResponse('download_files/test_file.txt', filename='testpage.html', media_type='application/octet-stream')
 
 
 
